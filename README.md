@@ -26,3 +26,21 @@ curl --location 'http://localhost:5000/feed' \
 ## Stop service
 `./stop.sh`
 
+## Clean up existing data 
+1. Stop container `./stop.sh`
+2. Remove container `docker rm -v k8s_dashboard`
+3. Start container `./start.sh`
+4. Check [dashboard](http://localhost:5000) 
+
+# Post from Kubernetes server
+Update `DASHBOARD_SRV` in `post-k8s-info.sh` script.
+ 
+Check if `jq` installed on target Kubernetes server otherwise install with command below:
+
+`sudo apt install jq -y`
+
+## Copy scripts to Kubernetes server
+`scp -r /k8s-scripts/post-k8s-info.sh target_srv:~/`
+
+## Add cron job to check every day
+`0 0 */1 * * /bin/bash ~/k8s-scripts/post-k8s-info.sh`
