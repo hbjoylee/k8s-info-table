@@ -1,4 +1,4 @@
-# K8S dashboard accept JSON request posted from Kubernetes server and presents infomation in simple Flask table.
+K8S dashboard accept JSON request posted from Kubernetes server and presents infomation in simple Flask table.
 
 # Usage
 
