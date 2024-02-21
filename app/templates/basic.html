@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block app_context %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+            <table id="data" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>K8S Version</th>
+                        <th>Expire Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for info in k8sinfo %}
+                        <tr>
+                            <td>{{ info.url }}</td>
+                            <td>{{ info.k8sver }}</td>
+                            <td>{{ info.expire_date }}</td>
+                        </tr>
+                    {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block datatable_scripts %}
+    <script>
+        $(document).ready(function() {
+            $('#data').DataTable({
+                columns: [
+                    null,
+                    {searchable: false},
+                    {orderable: false, searchable: false},
+                    {orderable: false, searchable: false},
+                    null
+                ],
+            });
+        });
+    </script>
+{% endblock %}

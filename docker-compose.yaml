@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  k8sdashboard:
+    image: k8sdashboard
+    container_name: k8s_dashboard
+    ports:
+      - "5000:5000"
