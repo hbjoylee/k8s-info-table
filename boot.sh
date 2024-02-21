@@ -1,4 +1,5 @@
 #!/bin/sh
+source k8sdashboard/bin/activate
 while true; do
     flask db upgrade
     if [[ "$?" == "0" ]]; then
