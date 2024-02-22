@@ -8,7 +8,7 @@ K8S dashboard accept JSON request posted from Kubernetes server and presents inf
 ## Start service
 `./start.sh`
 
-## Acess dashboard
+## Access dashboard
 Open browser and open 
 [K8s Dashboard](http://localhost:5000)
 
@@ -44,3 +44,10 @@ Check if `jq` installed on target Kubernetes server otherwise install with comma
 
 ## Add cron job to check every day
 `0 0 */1 * * /bin/bash ~/k8s-scripts/post-k8s-info.sh`
+
+# Development
+## Column change 
+1. Add/remove columns in `models.py`
+2. `flask db init` if you don't have migrations directory exist otherwise will see error `Directory migrations already exists and is not empty` which is safe to ignore 
+3. `flask db migrate -m "Adding/Removing column x."`
+4. `flask db upgrade`

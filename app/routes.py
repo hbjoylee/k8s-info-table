@@ -1,6 +1,7 @@
 from app import app, db
 from app.models import K8sInfo
 from flask import render_template, request, jsonify
+from datetime import datetime
 
 
 @app.route('/feed', methods=['POST'])
@@ -18,14 +19,36 @@ def feed():
         return jsonify({'error': 'Unsupported method, POST ONLY'}), 405
 
 
+def is_date_valid(data, key, datetime_format):
+    valid = False
+    try:
+        datetime.strptime(data[key], datetime_format)
+        valid = True
+    except ValueError:
+        print("Incorrect data format, should be " + datetime_format)
+    except Exception:
+        print("Exception: " + str(Exception))
+
+    return valid
+
+
 def save_to_db(data):
+    datetime_fmt = '%Y-%m-%d %H:%M:%S'
     exist = K8sInfo.query.filter_by(url=data['url']).first()
     if exist is not None:
         exist.k8sver = data['k8sver']
         exist.expire_date = data['expire']
+        if is_date_valid(data, 'posted', datetime_fmt):
+            exist.posted = datetime.strptime(data['posted'], datetime_fmt)
         db.session.commit()
     else:
-        k8sinfo = K8sInfo(url=data['url'], k8sver=data['k8sver'], expire_date=data['expire'])
+        k8sinfo = None
+        if is_date_valid(data, 'posted', datetime_fmt):
+            k8sinfo = K8sInfo(url=data['url'], k8sver=data['k8sver'], expire_date=data['expire'],
+                              posted=datetime.strptime(data['posted'], datetime_fmt))
+        else:
+            k8sinfo = K8sInfo(url=data['url'], k8sver=data['k8sver'], expire_date=data['expire'])
+
         db.session.add(k8sinfo)
         db.session.commit()
 
