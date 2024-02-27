@@ -1,5 +1,5 @@
 #!/bin/bash
-URL=`kubectl get --all-namespaces ingress -o json 2> /dev/null| jq -r '.items[] | .spec.rules[] | .host as $host | .http.paths[] | ( $host )' |sort|uniq|tail -1``
+URL=`kubectl get --all-namespaces ingress -o json 2> /dev/null| jq -r '.items[] | .spec.rules[] | .host as $host | .http.paths[] | ( $host )' |sort|uniq|tail -1`
 
 K8SVER=`kubectl -n kube-system get cm kubeadm-config -o json|jq -r .data.ClusterConfiguration|grep kubernetesVersion |awk '{print $2}'`
 
